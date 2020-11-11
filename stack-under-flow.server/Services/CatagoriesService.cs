@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Stack.Models;
 using Stack.Repositories;
 
@@ -13,29 +14,55 @@ namespace Stack.Services
       _repo = repo;
     }
 
-    internal object GetAll()
+    internal IEnumerable<Catagory> GetAll()
     {
-      throw new NotImplementedException();
+      return _repo.GetAll();
     }
 
-    internal object GetById(int id)
+    internal Catagory GetById(int id)
     {
-      throw new NotImplementedException();
+      Catagory data = _repo.GetById(id);
+      if(data == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return data;
     }
 
     internal Catagory Create(Catagory newCatagory)
     {
-      throw new NotImplementedException();
+      newCatagory.Id = _repo.Create(newCatagory);
+      return newCatagory;
     }
 
-    internal object Edit(Catagory editCatagory, string id)
+    internal Catagory Edit(Catagory editCatagory, string creatorId)
     {
-      throw new NotImplementedException();
+      Catagory data = _repo.GetById(editCatagory.Id);
+      if(data == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      if(data.CreatorId != creatorId)
+      {
+        throw new Exception("Denied Invalid Permissions");
+      }
+      editCatagory.Title = editCatagory.Title == null ? data.Title : editCatagory.Title;
+      return _repo.Edit(editCatagory);
     }
 
-    internal object Delete(int id1, string id2)
+    internal object Delete(int id, string creatorId)
     {
-      throw new NotImplementedException();
+      Catagory data = _repo.GetById(id);
+      if(data == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      if(data.CreatorId != creatorId)
+      {
+        throw new Exception("Denied Invalid Permissions");
+      }
+      _repo.Delete(id);
+      return "Successfully Deleted";
     }
   }
 }
