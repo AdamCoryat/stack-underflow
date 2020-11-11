@@ -46,6 +46,10 @@ namespace Stack.Services
       {
         throw new Exception("Denied Invalid Permissions");
       }
+      if(data.Questions != 0)
+      {
+        throw new Exception("Can Not Delete With Active Questions")
+      }
       editCatagory.Title = editCatagory.Title == null ? data.Title : editCatagory.Title;
       return _repo.Edit(editCatagory);
     }
@@ -60,6 +64,10 @@ namespace Stack.Services
       if(data.CreatorId != creatorId)
       {
         throw new Exception("Denied Invalid Permissions");
+      }
+      if(data.Questions != 0)
+      {
+        throw new Exception("Can not Delete With active Questions");
       }
       _repo.Delete(id);
       return "Successfully Deleted";
