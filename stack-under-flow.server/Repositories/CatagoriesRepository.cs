@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using Dapper;
 using Stack.Models;
 
 namespace Stack.Repositories
@@ -16,27 +18,54 @@ namespace Stack.Repositories
 
     internal IEnumerable<Catagory> GetAll()
     {
-      throw new NotImplementedException();
+      string sql = @"
+      SELECT
+      c.*,
+      p.*
+      FROM catagories c
+      JOIN profiles p on c.creatorId = p.id";
+      return _db.Query<Catagory, Profile, Catagory>(sql, (Catagory, profile) => {Catagory.Creator = profile; return Catagory;}, splitOn: "id");
     }
 
     internal Catagory GetById(int id)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      SELECT
+      c.*,
+      p.*
+      FROM catagories c
+      JOIN profiles p on c.creatorId = p.id
+      WHERE k.id = @id LIMIT 1";
+      return _db.Query<Catagory, Profile, Catagory>(sql, (catagory, profile) => {catagory.Creator = profile; return catagory;}, new {id}, splitOn: "id").FirstOrDefault();
     }
 
     internal int Create(Catagory newCatagory)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      INSERT INTO Catagories
+      (creatorId, title, questions)
+      VALUES
+      (@CreatorId, @Title, @Questions);
+      SELECT LAST_INSERT_ID();";
+      return _db.ExecuteScalar<int>(sql, newCatagory);
     }
 
     internal Catagory Edit(Catagory editCatagory)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      UPDATE catagories
+      SET
+      title = @Title,
+      questions = @Questions
+      WHERE id = @Id;";
+      _db.Execute(sql, editCatagory);
+      return editCatagory;
     }
 
     internal void Delete(int id)
     {
-      throw new NotImplementedException();
+      string sql = "DELETE FROM catagories WHERE id = @id LIMIT 1";
+      _db.Execute(sql, new {id});
     }
   }
 }
