@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using Dapper;
 using Stack.Models;
 
 namespace Stack.Repositories
@@ -16,27 +18,58 @@ namespace Stack.Repositories
 
     internal IEnumerable<Question> GetAll()
     {
-      throw new NotImplementedException();
+      string sql = @"
+      SELECT
+      q.*,
+      p.*
+      FROM questions q
+      JOIN profiles p on q.creatorId = p.id";
+      return _db.Query<Question, Profile, Question>(sql, (question, profile) => {question.Creator = profile; return question;}, splitOn: "id");
     }
 
     internal Question GetById(int id)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      SELECT
+      q.*,
+      p.*
+      FROM questions q
+      JOIN profiles p on q.creatorId = p.id
+      WHERE q.id = @id LIMIT 1";
+      return _db.Query<Question, Profile, Question>(sql, (question, profile) => {question.Creator = profile; return question;}, new {id}, splitOn: "id").FirstOrDefault();
     }
 
     internal int Create(Question newQuestion)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      INSERT INTO Questions
+      (creatorId, title, description, dateCreated, dateClosed, dateUpdated, responses, isSolved, catagoryId)
+      VALUES
+      (@CreatorId, @Title, @Description, @DateCreated, @DateClosed, @DateUpdated, @Responses, @IsSolved, @CatagoryId)
+      SELECT LAST_INSERT_ID();";
+      return _db.ExecuteScalar<int>(sql, newQuestion);
     }
 
     internal Question Edit(Question editQuestion)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      UPDATE questions
+      SET
+      title = @Title,
+      description = @Description,
+      dateClosed = @DateClosed, 
+      dateUpdated = @DateUpdated,
+      responses = @Responses,
+      isSolved = @IsSolved
+      WHERE id = @Id;";
+      _db.ExecuteScalar(sql, editQuestion);
+      return editQuestion;
     }
 
     internal void Delete(int id)
     {
-      throw new NotImplementedException();
+      string sql = "DELETE FROM questions WHERE id = @Id LIMIT 1";
+      _db.Execute(sql, new {id});
     }
   }
 }

@@ -24,7 +24,7 @@ namespace Stack.Repositories
       p.*
       FROM catagories c
       JOIN profiles p on c.creatorId = p.id";
-      return _db.Query<Catagory, Profile, Catagory>(sql, (Catagory, profile) => {Catagory.Creator = profile; return Catagory;}, splitOn: "id");
+      return _db.Query<Catagory, Profile, Catagory>(sql, (catagory, profile) => {catagory.Creator = profile; return catagory;}, splitOn: "id");
     }
 
     internal Catagory GetById(int id)
@@ -64,7 +64,7 @@ namespace Stack.Repositories
 
     internal void Delete(int id)
     {
-      string sql = "DELETE FROM catagories WHERE id = @id LIMIT 1";
+      string sql = "DELETE FROM catagories WHERE id = @Id LIMIT 1";
       _db.Execute(sql, new {id});
     }
   }

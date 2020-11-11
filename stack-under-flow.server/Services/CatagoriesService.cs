@@ -48,7 +48,7 @@ namespace Stack.Services
       }
       if(data.Questions != 0)
       {
-        throw new Exception("Can Not Delete With Active Questions")
+        throw new Exception("Can Not Delete With Active Questions");
       }
       editCatagory.Title = editCatagory.Title == null ? data.Title : editCatagory.Title;
       return _repo.Edit(editCatagory);
