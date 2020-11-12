@@ -54,7 +54,7 @@ namespace Stack.Services
       return _repo.Edit(editCatagory);
     }
 
-    internal object Delete(int id, string creatorId)
+    internal string Delete(int id, string creatorId)
     {
       Catagory data = _repo.GetById(id);
       if(data == null)

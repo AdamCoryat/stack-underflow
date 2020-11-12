@@ -62,7 +62,7 @@ namespace Stack.Repositories
       responses = @Responses,
       isSolved = @IsSolved
       WHERE id = @Id;";
-      _db.ExecuteScalar(sql, editQuestion);
+      _db.Execute(sql, editQuestion);
       return editQuestion;
     }
 
