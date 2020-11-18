@@ -7,9 +7,9 @@ using Stack.Models;
 
 namespace Stack.Repositories
 {
-    public class ResponsesRepository
-    {
-      private readonly IDbConnection _db;
+  public class ResponsesRepository
+  {
+    private readonly IDbConnection _db;
 
     public ResponsesRepository(IDbConnection db)
     {
@@ -24,7 +24,7 @@ namespace Stack.Repositories
       p.*
       FROM responses r
       JOIN profiles p on r.creatorId = p.id";
-      return _db.Query<Response, Profile, Response>(sql, (response, profile) => {response.Creator = profile; return response;}, splitOn: "id");
+      return _db.Query<Response, Profile, Response>(sql, (response, profile) => { response.Creator = profile; return response; }, splitOn: "id");
     }
 
     internal Response GetById(int id)
@@ -35,8 +35,8 @@ namespace Stack.Repositories
       p.*
       FROM responses r
       JOIN profiles p on r.creatorId = p.id
-      WHERE q.id = @id LIMIT 1";
-      return _db.Query<Response, Profile, Response>(sql, (response, profile) => {response.Creator = profile; return response;}, new {id}, splitOn: "id").FirstOrDefault();
+      WHERE r.id = @id LIMIT 1";
+      return _db.Query<Response, Profile, Response>(sql, (response, profile) => { response.Creator = profile; return response; }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
     internal int Create(Response newResponse)
@@ -45,7 +45,7 @@ namespace Stack.Repositories
       INSERT INTO Responses
       (creatorId, title, description, votes, questionId, isAnswer)
       VALUES
-      (@CreatorId, @Title, @Description, @Votes, @QuestionId, @IsAnswer)
+      (@CreatorId, @Title, @Description, @Votes, @QuestionId, @IsAnswer);
       SELECT LAST_INSERT_ID();";
       return _db.ExecuteScalar<int>(sql, newResponse);
     }
@@ -67,9 +67,9 @@ namespace Stack.Repositories
     internal void Delete(int id)
     {
       string sql = "DELETE FROM responses WHERE id = @Id LIMIT 1";
-      _db.Execute(sql, new {id});
+      _db.Execute(sql, new { id });
     }
 
-    
+
   }
 }

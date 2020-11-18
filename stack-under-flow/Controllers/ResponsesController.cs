@@ -9,11 +9,11 @@ using Stack.Services;
 
 namespace Stack.Controllers
 {
-    [ApiController]
-    [Route("/api/[controller]")]
-    public class ResponsesController : ControllerBase
-    {
-      private readonly ResponsesService _rs;
+  [ApiController]
+  [Route("/api/[controller]")]
+  public class ResponsesController : ControllerBase
+  {
+    private readonly ResponsesService _rs;
 
     public ResponsesController(ResponsesService rs)
     {
@@ -71,6 +71,7 @@ namespace Stack.Controllers
       {
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
         editResponse.Id = id;
+        editResponse.Creator = userInfo;
         return Ok(_rs.Edit(editResponse, userInfo.Id));
       }
       catch (Exception e)
