@@ -7,9 +7,9 @@ using Stack.Models;
 
 namespace Stack.Repositories
 {
-    public class QuestionsRepository
-    {
-      private readonly IDbConnection _db;
+  public class QuestionsRepository
+  {
+    private readonly IDbConnection _db;
 
     public QuestionsRepository(IDbConnection db)
     {
@@ -24,7 +24,7 @@ namespace Stack.Repositories
       p.*
       FROM questions q
       JOIN profiles p on q.creatorId = p.id";
-      return _db.Query<Question, Profile, Question>(sql, (question, profile) => {question.Creator = profile; return question;}, splitOn: "id");
+      return _db.Query<Question, Profile, Question>(sql, (question, profile) => { question.Creator = profile; return question; }, splitOn: "id");
     }
 
     internal Question GetById(int id)
@@ -36,7 +36,7 @@ namespace Stack.Repositories
       FROM questions q
       JOIN profiles p on q.creatorId = p.id
       WHERE q.id = @id LIMIT 1";
-      return _db.Query<Question, Profile, Question>(sql, (question, profile) => {question.Creator = profile; return question;}, new {id}, splitOn: "id").FirstOrDefault();
+      return _db.Query<Question, Profile, Question>(sql, (question, profile) => { question.Creator = profile; return question; }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
     internal int Create(Question newQuestion)
@@ -45,7 +45,7 @@ namespace Stack.Repositories
       INSERT INTO Questions
       (creatorId, title, description, dateCreated, dateClosed, dateUpdated, responses, isSolved, catagoryId)
       VALUES
-      (@CreatorId, @Title, @Description, @DateCreated, @DateClosed, @DateUpdated, @Responses, @IsSolved, @CatagoryId)
+      (@CreatorId, @Title, @Description, @DateCreated, @DateClosed, @DateUpdated, @Responses, @IsSolved, @CatagoryId);
       SELECT LAST_INSERT_ID();";
       return _db.ExecuteScalar<int>(sql, newQuestion);
     }
@@ -69,7 +69,7 @@ namespace Stack.Repositories
     internal void Delete(int id)
     {
       string sql = "DELETE FROM questions WHERE id = @Id LIMIT 1";
-      _db.Execute(sql, new {id});
+      _db.Execute(sql, new { id });
     }
   }
 }

@@ -7,9 +7,9 @@ using Stack.Models;
 
 namespace Stack.Repositories
 {
-    public class CatagoriesRepository
-    {
-      private readonly IDbConnection _db;
+  public class CatagoriesRepository
+  {
+    private readonly IDbConnection _db;
 
     public CatagoriesRepository(IDbConnection db)
     {
@@ -24,7 +24,7 @@ namespace Stack.Repositories
       p.*
       FROM catagories c
       JOIN profiles p on c.creatorId = p.id";
-      return _db.Query<Catagory, Profile, Catagory>(sql, (catagory, profile) => {catagory.Creator = profile; return catagory;}, splitOn: "id");
+      return _db.Query<Catagory, Profile, Catagory>(sql, (catagory, profile) => { catagory.Creator = profile; return catagory; }, splitOn: "id");
     }
 
     internal Catagory GetById(int id)
@@ -35,8 +35,8 @@ namespace Stack.Repositories
       p.*
       FROM catagories c
       JOIN profiles p on c.creatorId = p.id
-      WHERE k.id = @id LIMIT 1";
-      return _db.Query<Catagory, Profile, Catagory>(sql, (catagory, profile) => {catagory.Creator = profile; return catagory;}, new {id}, splitOn: "id").FirstOrDefault();
+      WHERE c.id = @id LIMIT 1";
+      return _db.Query<Catagory, Profile, Catagory>(sql, (catagory, profile) => { catagory.Creator = profile; return catagory; }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
     internal int Create(Catagory newCatagory)
@@ -65,7 +65,7 @@ namespace Stack.Repositories
     internal void Delete(int id)
     {
       string sql = "DELETE FROM catagories WHERE id = @Id LIMIT 1";
-      _db.Execute(sql, new {id});
+      _db.Execute(sql, new { id });
     }
   }
 }

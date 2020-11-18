@@ -9,11 +9,11 @@ using Stack.Services;
 
 namespace Stack.Controllers
 {
-    [ApiController]
-    [Route("/api/[controller]")]
-    public class QuestionsController : ControllerBase
-    {
-      private readonly QuestionsService _qs;
+  [ApiController]
+  [Route("/api/[controller]")]
+  public class QuestionsController : ControllerBase
+  {
+    private readonly QuestionsService _qs;
 
     public QuestionsController(QuestionsService qs)
     {
@@ -72,16 +72,16 @@ namespace Stack.Controllers
       {
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
         editQuestion.Id = id;
+        editQuestion.Creator = userInfo;
         return Ok(_qs.Edit(editQuestion, userInfo.Id));
       }
-      catch (System.Exception)
+      catch (Exception e)
       {
-          
-          throw;
+        return BadRequest(e.Message);
       }
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
     public async Task<ActionResult<String>> Delete(int id)
     {
@@ -95,5 +95,5 @@ namespace Stack.Controllers
         return BadRequest(e.Message);
       }
     }
-  }    
+  }
 }

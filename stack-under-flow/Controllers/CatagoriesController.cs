@@ -9,11 +9,11 @@ using Stack.Services;
 
 namespace Stack.Controllers
 {
-    [ApiController]
-    [Route("/api/[controller]")]
-    public class CatagoriesController : ControllerBase
-    {
-      private readonly CatagoriesService _cs;
+  [ApiController]
+  [Route("/api/[controller]")]
+  public class CatagoriesController : ControllerBase
+  {
+    private readonly CatagoriesService _cs;
 
     public CatagoriesController(CatagoriesService cs)
     {
@@ -58,7 +58,7 @@ namespace Stack.Controllers
         Catagory created = _cs.Create(newCatagory);
         created.Creator = userInfo;
         return Ok(created);
-        
+
       }
       catch (Exception e)
       {
@@ -74,6 +74,7 @@ namespace Stack.Controllers
       {
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
         editCatagory.Id = id;
+        editCatagory.Creator = userInfo;
         return Ok(_cs.Edit(editCatagory, userInfo.Id));
       }
       catch (Exception e)
