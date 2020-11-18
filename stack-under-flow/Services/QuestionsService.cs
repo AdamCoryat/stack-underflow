@@ -29,6 +29,11 @@ namespace Stack.Services
       return data;
     }
 
+    internal IEnumerable<Question> GetQuestionsByCatagoryId(int id)
+    {
+      return _repo.GetQuestionsByCatagoryId(id);
+    }
+
     internal Question Create(Question newQuestion)
     {
       newQuestion.Id = _repo.Create(newQuestion);
@@ -58,6 +63,8 @@ namespace Stack.Services
       editQuestion.DateUpdated = editQuestion.DateUpdated == null ? data.DateUpdated : editQuestion.DateUpdated;
       return _repo.Edit(editQuestion);
     }
+
+
 
     internal string Delete(int id, string creatorId)
     {

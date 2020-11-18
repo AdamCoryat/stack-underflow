@@ -39,6 +39,19 @@ namespace Stack.Repositories
       return _db.Query<Question, Profile, Question>(sql, (question, profile) => { question.Creator = profile; return question; }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
+    internal IEnumerable<Question> GetQuestionsByCatagoryId(int id)
+    {
+      string sql = @"
+      SELECT
+      q.*,
+      c.*
+      FROM questions q
+      JOIN catagories c on q.catagoryId = c.id
+      WHERE q.catagoryId = @Id
+      ";
+      return _db.Query<Question>(sql, new { id });
+    }
+
     internal int Create(Question newQuestion)
     {
       string sql = @"

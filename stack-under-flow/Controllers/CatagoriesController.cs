@@ -14,10 +14,12 @@ namespace Stack.Controllers
   public class CatagoriesController : ControllerBase
   {
     private readonly CatagoriesService _cs;
+    private readonly QuestionsService _qs;
 
-    public CatagoriesController(CatagoriesService cs)
+    public CatagoriesController(CatagoriesService cs, QuestionsService qs)
     {
       _cs = cs;
+      _qs = qs;
     }
 
     [HttpGet]
@@ -40,6 +42,25 @@ namespace Stack.Controllers
       try
       {
         return Ok(_cs.GetById(id));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}/questions")]
+    public async Task<ActionResult<IEnumerable<Question>>> GetQuestionsByCatagoryId(int id)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        IEnumerable<Question> questions = _qs.GetQuestionsByCatagoryId(id);
+        foreach (Question q in questions)
+        {
+          q.Creator = userInfo;
+        }
+        return Ok(questions);
       }
       catch (Exception e)
       {
