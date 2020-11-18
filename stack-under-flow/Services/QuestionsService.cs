@@ -31,7 +31,12 @@ namespace Stack.Services
 
     internal IEnumerable<Question> GetQuestionsByCatagoryId(int id)
     {
-      return _repo.GetQuestionsByCatagoryId(id);
+      IEnumerable<Question> data = _repo.GetQuestionsByCatagoryId(id);
+      if (data == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return data;
     }
 
     internal Question Create(Question newQuestion)
