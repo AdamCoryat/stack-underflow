@@ -29,6 +29,16 @@ namespace Stack.Services
       return data;
     }
 
+    internal IEnumerable<Response> GetRepsonsesByQuestionId(int id)
+    {
+      IEnumerable<Response> data = _repo.GetResponsesByQuestionId(id);
+      if (data == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return data;
+    }
+
     internal Response Create(Response newResponse)
     {
       newResponse.Id = _repo.Create(newResponse);
@@ -55,6 +65,8 @@ namespace Stack.Services
       editResponse.Description = editResponse.Description == null ? data.Description : editResponse.Description;
       return _repo.Edit(editResponse);
     }
+
+
 
     internal string Delete(int id, string creatorId)
     {

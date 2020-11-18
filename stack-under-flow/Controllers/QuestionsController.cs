@@ -14,10 +14,12 @@ namespace Stack.Controllers
   public class QuestionsController : ControllerBase
   {
     private readonly QuestionsService _qs;
+    private readonly ResponsesService _rs;
 
-    public QuestionsController(QuestionsService qs)
+    public QuestionsController(QuestionsService qs, ResponsesService rs)
     {
       _qs = qs;
+      _rs = rs;
     }
 
     [HttpGet]
@@ -39,6 +41,25 @@ namespace Stack.Controllers
       try
       {
         return Ok(_qs.GetById(id));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}/responses")]
+    public async Task<ActionResult<IEnumerable<Response>>> GetResponsesByQuestionId(int id)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        IEnumerable<Response> responses = _rs.GetRepsonsesByQuestionId(id);
+        foreach (Response r in responses)
+        {
+          r.Creator = userInfo;
+        }
+        return Ok(responses);
       }
       catch (Exception e)
       {

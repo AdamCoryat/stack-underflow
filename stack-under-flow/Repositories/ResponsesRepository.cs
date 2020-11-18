@@ -39,6 +39,18 @@ namespace Stack.Repositories
       return _db.Query<Response, Profile, Response>(sql, (response, profile) => { response.Creator = profile; return response; }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
+    internal IEnumerable<Response> GetResponsesByQuestionId(int id)
+    {
+      string sql = @"
+      SELECT
+      r.*,
+      q.*
+      FROM responses r
+      JOIN questions q on r.questionId = q.id
+      WHERE r.questionId = @Id";
+      return _db.Query<Response>(sql, new { id });
+    }
+
     internal int Create(Response newResponse)
     {
       string sql = @"
