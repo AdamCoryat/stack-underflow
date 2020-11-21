@@ -33,7 +33,6 @@ namespace Stack.Controllers
       {
         return BadRequest(e.Message);
       }
-
     }
 
     [HttpGet("{id}")]
