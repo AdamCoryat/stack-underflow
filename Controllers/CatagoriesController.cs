@@ -59,6 +59,7 @@ namespace Stack.Controllers
         {
           q.Creator = userInfo;
         }
+
         return Ok(questions);
       }
       catch (Exception e)
