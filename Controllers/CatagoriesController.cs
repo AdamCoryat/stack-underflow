@@ -61,6 +61,7 @@ namespace Stack.Controllers
         }
         return Ok(questions);
       }
+
       catch (Exception e)
       {
         return BadRequest(e.Message);
