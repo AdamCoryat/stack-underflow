@@ -10,7 +10,6 @@
   "DB": {
     "gearhost": "server=den1.mysql6.gear.host;port=3306;database=stackunderflow2;user id=stackunderflow2;password=Fl3h~7-TC2aU"
   },
-  
   "Auth0": {  
     "Domain": "dev-tunnelvision77.us.auth0.com",
     "Audience": "https://stack-underlfow.com",
